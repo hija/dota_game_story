@@ -2,31 +2,50 @@ import jsonlines
 
 class ReplayWindow:
 
-    kills = []
-
     def __init__(self, window_data):
         self.window_data = window_data
 
     def calculate_window(self):
         ## Now we "summarize" the window
-        self.get_kills()
-        # ToDo: Continue
+        self.kills = self.get_kills()
+        self.smoked = self.get_smoked()
 
     def get_kills(self):
+        kills = []
         for data_line in self.window_data:
             if data_line['type'] == 'DOTA_COMBATLOG_DEATH':
-                if data_line['targetname'].startswith('npc_dota_hero'): #Hero was killed
-                    self.kills.append((data_line['time'], data_line['attackername'], data_line['targetname']))
+                attacker_beautified = ReplayWindow.beautify_name(data_line['attackername'])
+                target_beautified = ReplayWindow.beautify_name(data_line['targetname'])
+                kills.append((data_line['time'], data_line['attackername'], data_line['targetname'], attacker_beautified, target_beautified))
+        return kills
+
+    def get_smoked(self):
+        smoked = []
+        for data_line in self.window_data:
+            if data_line['type'] == 'DOTA_COMBATLOG_MODIFIER_ADD' and data_line['inflictor'] == 'modifier_smoke_of_deceit':
+                if len(smoked) == 0:
+                    smoked.append(data_line['time']) # Put time at first element
+                smoked.append(ReplayWindow.beautify_name(data_line['targetname']))
+        return smoked
 
     def get_info_dict(self):
-        return {'kills': self.kills}
+        return {'kills': self.kills, 'smoked': self.smoked}
+
+    def beautify_name(name):
+        if name.startswith('npc_dota_hero'):
+            ugly_name_parts = name[len('npc_dota_hero_'):].split('_')
+            return ' '.join(['{}{}'.format(x[0].upper(), x[1:]) for x in ugly_name_parts])
+        elif name.startswith('npc_dota_roshan'):
+            return 'Roshan'
+        else:
+            return name
 
 class ReplayLinesParser:
 
     def __init__(self, replay_file_path):
         self.replay_file_path = replay_file_path
 
-    def parse_replay_to_windows(self, timeframe = 5, overlap = 3):
+    def parse_replay_to_windows(self, timeframe = 5, overlap = 0):
         with jsonlines.open(self.replay_file_path) as jsonreader:
             replay_data = list(jsonreader)
             #timestamp = replay_data[0]['time']

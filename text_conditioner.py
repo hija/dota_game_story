@@ -40,11 +40,40 @@ class TextConditionDatabase:
         self.batchCommit = True
 
         conditions = [
-            TextCondition('action == \'KILLED\'', '{1} manages to kill {2}.'),
-            TextCondition('action == \'KILLED\'', '{1} kills {2}.'),
-            TextCondition('action == \'KILLED\'', '{2} gets killed by {1}.'),
-            TextCondition('action == \'KILLED\'', '{2} is dead!'),
-            TextCondition('action == \'KILLED\'', '{1} cuts the throat of {2}.')
+            TextCondition('action == \'KILLED\' and killinfo[2].startswith(\'npc_dota_hero\')', '[{0}] {3} manages to kill {4}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2].startswith(\'npc_dota_hero\')', '[{0}] {3} kills {4}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2].startswith(\'npc_dota_hero\')', '[{0}] {4} gets killed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2].startswith(\'npc_dota_hero\')', '[{0}] {4} is dead!'),
+            TextCondition('action == \'KILLED\' and killinfo[2].startswith(\'npc_dota_hero\')', '[{0}] {3} cuts the throat of {4}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_roshan\'', '[{0}] {3} is able to kill rosh!'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_roshan\'', '[{0}] {3} kills roshan!'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_roshan\'', '[{0}] Roshan gets killed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_roshan\'', '[{0}] Rosh is down - killed by {3}!'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_goodguys_tower3_bot\'', '[{0}] Radiant\'s bottom (T3) tower is destroyed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_goodguys_tower2_bot\'', '[{0}] Radiant\'s bottom (T2) tower is destroyed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_goodguys_tower1_bot\'', '[{0}] Radiant\'s bottom (T1) tower is destroyed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_goodguys_tower3_top\'', '[{0}] Radiant\'s top (T3) tower is destroyed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_goodguys_tower2_top\'', '[{0}] Radiant\'s top (T2) tower is destroyed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_goodguys_tower1_top\'', '[{0}] Radiant\'s top (T1) tower is destroyed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_goodguys_tower1_mid\'', '[{0}] Radiant\'s mid (T1) tower is destroyed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_goodguys_tower2_mid\'', '[{0}] Radiant\'s mid (T2) tower is destroyed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_goodguys_tower3_mid\'', '[{0}] Radiant\'s mid (T3) tower is destroyed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_badguys_tower3_bot\'', '[{0}] Dire\'s bottom (T3) tower is destroyed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_badguys_tower2_bot\'', '[{0}] Dire\'s bottom (T2) tower is destroyed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_badguys_tower1_bot\'', '[{0}] Dire\'s bottom (T1) tower is destroyed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_badguys_tower3_top\'', '[{0}] Dire\'s top (T3) tower is destroyed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_badguys_tower2_top\'', '[{0}] Dire\'s top (T2) tower is destroyed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_badguys_tower1_top\'', '[{0}] Dire\'s top (T1) tower is destroyed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_badguys_tower1_mid\'', '[{0}] Dire\'s mid (T1) tower is destroyed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_badguys_tower2_mid\'', '[{0}] Dire\'s mid (T2) tower is destroyed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_badguys_tower3_mid\'', '[{0}] Dire\'s mid (T3) tower is destroyed by {3}.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_badguys_fort\'', '[{0}] Dire\'s ancient was detroyed - Radiants win the game.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_badguys_fort\'', '[{0}] The Dire\'s ancient is down - Radiants win the game.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_badguys_fort\'', '[{0}] Radiants bringing down the ancient and winning the game.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_goodguys_fort\'', '[{0}] Radiant\'s ancient was detroyed - Dire win the game.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_goodguys_fort\'', '[{0}] The Radiant\'s ancient is down - Dire win the game.'),
+            TextCondition('action == \'KILLED\' and killinfo[2] == \'npc_dota_goodguys_fort\'', '[{0}] Dire bringing down the ancient and winning the game.'),
+            TextCondition('action == \'SMOKED\'', '[{0}] {1} are smoking to find some good kills')
                     ]
         for condition in conditions:
             condition.save_to_db(self)

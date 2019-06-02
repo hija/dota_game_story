@@ -2,18 +2,24 @@ import jsonlines
 
 class ReplayWindow:
 
+    kills = []
+
     def __init__(self, window_data):
         self.window_data = window_data
 
     def calculate_window(self):
         ## Now we "summarize" the window
         self.get_kills()
-        pass
+        # ToDo: Continue
 
     def get_kills(self):
         for data_line in self.window_data:
             if data_line['type'] == 'DOTA_COMBATLOG_DEATH':
-                print(data_line)
+                if data_line['targetname'].startswith('npc_dota_hero'): #Hero was killed
+                    self.kills.append((data_line['time'], data_line['attackername'], data_line['targetname']))
+
+    def get_info_dict(self):
+        return {'kills': self.kills}
 
 class ReplayLinesParser:
 
@@ -42,9 +48,12 @@ class ReplayLinesParser:
                 all_windows_data.append(window_data)
 
             ## Calculate values for each window
+            all_windows = []
             for window_data in all_windows_data:
                 window = ReplayWindow(window_data)
                 window.calculate_window()
+                all_windows.append(window)
+            return all_windows
 
 
 if __name__ == '__main__':

@@ -1,5 +1,7 @@
 import click
 import text_conditioner
+import replay_lines_parser
+import story_teller
 import os
 
 @click.group()
@@ -24,6 +26,15 @@ def selftest():
     for con in cons:
         if con.eval({}):
             print(con.repText)
+
+@cli.command()
+@click.argument('filename')
+def parse(filename):
+    rlp = replay_lines_parser.ReplayLinesParser(filename)
+    st = story_teller.StoryTeller(rlp.parse_replay_to_windows())
+    st.generate_story()
+
+
 
 if __name__ == '__main__':
     cli()

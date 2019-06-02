@@ -39,7 +39,13 @@ class TextConditionDatabase:
         # Insert Data
         self.batchCommit = True
 
-        conditions = [TextCondition('1==1', 'yikes'), TextCondition('1==0', 'nope')]
+        conditions = [
+            TextCondition('action == \'KILLED\'', '{1} manages to kill {2}.'),
+            TextCondition('action == \'KILLED\'', '{1} kills {2}.'),
+            TextCondition('action == \'KILLED\'', '{2} gets killed by {1}.'),
+            TextCondition('action == \'KILLED\'', '{2} is dead!'),
+            TextCondition('action == \'KILLED\'', '{1} cuts the throat of {2}.')
+                    ]
         for condition in conditions:
             condition.save_to_db(self)
 
